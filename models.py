@@ -3,6 +3,20 @@ from datetime import datetime
 
 
 class Book:
+    """
+    A class representing a book with properties and methods.
+
+    Attributes:
+    _id (int): The unique identifier of the book.
+    title (str): The title of the book.
+    author (str): The author of the book.
+    year (int): The publication year of the book.
+    status (str): The availability status of the book. Defaults to 'в наличии'.
+
+    Methods:
+    to_dict(): Returns a dictionary representation of the book object.
+    """
+
     def __init__(self, id: int, title: str, author: str, year: int, status: str = 'в наличии'):
         self._id = id
         self.title = title
@@ -56,7 +70,10 @@ class Book:
             raise ValueError("status must be 'в наличии' or 'на руках'")
         self._status = value
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
+        """
+        Returns a dictionary representation of the book object.
+        """
         return {
             'id': self.id,
             'title': self.title,

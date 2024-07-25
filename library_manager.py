@@ -41,7 +41,7 @@ class LibraryManager:
                     return max(book['id'] for book in books) + 1
         return 1
 
-    def _load_books(self):
+    def _load_books(self) -> list[dict[str, Any]]:
         if not os.path.exists(self.storage_file):
             self._create_storage_file()
         with open(self.storage_file, 'r', encoding='utf-8') as f:
@@ -65,14 +65,14 @@ class LibraryManager:
                 return True
         return False
 
-    def find_books(self, query: str) -> list[Book]:
+    def find_books(self, query: str):
         return [book for book in self.books
                 if query.lower() in (book['title'] + book['author'] + str(book['year'])).lower()]
 
     def get_books(self):
         return self.books
 
-    def change_book_status(self, book_id: int, new_status: str) -> Book | bool:
+    def change_book_status(self, book_id: int, new_status: str) -> dict | bool:
         for book in self.books:
             if book['id'] == book_id:
                 validated_book = Book(book['id'], book['title'], book['author'], book['year'], new_status)
