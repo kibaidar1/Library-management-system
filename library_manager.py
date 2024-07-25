@@ -1,11 +1,30 @@
 import json
 import os
-from typing import Dict, Any
+from typing import Any
 
 from models import Book
 
 
 class LibraryManager:
+    """
+    A class to manage a library's collection of books.
+
+    Attributes:
+    storage_file (str): The file where book data is stored. Defaults to 'library.json'.
+    books (list): A list of dictionaries representing books in the library.
+
+    Methods:
+    _create_storage_file(): Creates a new storage file if it doesn't exist.
+    _generate_id(): Generates a unique ID for a new book.
+    _load_books(): Loads book data from the storage file.
+    _save_books(): Saves book data to the storage file.
+    add_book(title: str, author: str, year: int) -> dict: Adds a new book to the library.
+    delete_book(book_id: int) -> bool: Deletes a book from the library by its ID.
+    find_books(query: str) -> list: Finds books in the library based on a search query.
+    get_books(): Returns a list of all books in the library.
+    change_book_status(book_id: int, new_status: str) -> Book | bool: Changes the status of a book.
+    """
+
     def __init__(self, storage_file: str = 'library.json'):
         self.storage_file = storage_file
         self.books = self._load_books()
@@ -56,7 +75,8 @@ class LibraryManager:
     def change_book_status(self, book_id: int, new_status: str) -> Book | bool:
         for book in self.books:
             if book['id'] == book_id:
-                book['status'] = new_status
+                validated_book = Book(book['id'], book['title'], book['author'], book['year'], new_status)
+                book['status'] = validated_book.status
                 self._save_books()
                 return book
         return False

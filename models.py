@@ -3,12 +3,12 @@ from datetime import datetime
 
 
 class Book:
-    def __init__(self, id: int, title: str, author: str, year: int):
+    def __init__(self, id: int, title: str, author: str, year: int, status: str = 'в наличии'):
         self._id = id
         self.title = title
         self.author = author
         self.year = year
-        self.status = 'в наличии'
+        self.status = status
 
     @property
     def id(self):
@@ -64,4 +64,3 @@ class Book:
             'year': self.year,
             'status': self.status
         }
-

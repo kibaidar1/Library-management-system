@@ -14,6 +14,10 @@ class Menu:
         author = input("Введите автора книги: ")
         year = (input("Введите год издания: "))
 
+        if not year.isdigit():
+            print(self.ANSI_ERROR('Год должен быть числом'))
+            return
+
         try:
             new_book = library_manager.add_book(title, author, int(year))
             print(self.ANSI_ACCESS(f'Книга: {new_book}, успешно добавлена!'))
@@ -21,7 +25,11 @@ class Menu:
             print(self.ANSI_ERROR(str(e)))
 
     def delite_book_menu(self):
-        book_id = input("Введите ID (положительное число) книги, которую хотите удалить: ")
+        book_id = input("Введите ID книги, которую хотите удалить: ")
+
+        if not book_id.isdigit():
+            print(self.ANSI_WRONG('ID должно быть числом'))
+            return
 
         if library_manager.delete_book(int(book_id)):
             print(self.ANSI_ACCESS('Книга удалена'))
@@ -49,12 +57,17 @@ class Menu:
         book_id = (input("Введите ID книги: "))
         if book_id.isdigit():
             status = input("Введите новый статус ('в наличии' или 'на руках'): ")
-            if library_manager.change_book_status(int(book_id), status):
-                print('Статус книги изменен')
-            else:
-                print('Книга с таким ID не найдена')
+            try:
+                changed_book = library_manager.change_book_status(int(book_id), status)
+
+                if changed_book:
+                    print(self.ANSI_ACCESS(f'Статус книги изменен: {changed_book}'))
+                else:
+                    print(self.ANSI_WRONG('Книга с таким ID не найдена'))
+            except ValueError as e:
+                print(self.ANSI_ERROR(str(e)))
 
         else:
-            print("ID должно быть числом")
+            print(self.ANSI_ERROR("ID должно быть числом"))
 
 
